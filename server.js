@@ -9,7 +9,9 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname))
 app.use(cors())
 
-const client = new MercadoPagoConfig({
+
+// Aqui ele anexa a api do mercado livre ao token da sua conta
+const client = new MercadoPagoConfig({ 
     accessToken: process.env.ACESS_TOKEN
 })
 
@@ -19,11 +21,8 @@ app.get('/', (req, res) => {
 })
 
 app.post('/pagar', async (req, res) => {
-    console.log(`[DEBBUG] req.body = ${JSON.stringify(req.body)}`)
-
     const arrayProdutos = req.body.arrayProdutos
-    console.log(`[DEBBUG] arrayProdutos = ${JSON.stringify(arrayProdutos)}`)
-
+    
     const preference = new Preference(client)
 
     try {
@@ -45,10 +44,11 @@ app.post('/pagar', async (req, res) => {
         return res.status(500).json({ error: 'Erro ao pagar' })
 
     }
-
-
 })
 
+// Back_urls é o endereço que o mercado pago joga o usuario depois de pagar.
+// auto_return approved significa que assim que o usuario conseguir pagar, o 
+// site automaticamente redireciona ele para o site que tava 
 
 
 app.listen(3000, () => {
