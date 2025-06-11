@@ -29,18 +29,11 @@ app.post('/pagar', async (req, res) => {
     try {
         const result = await preference.create({
             body: {
-                // items: JSON.parse(arrayProdutos),
-                items: [
-                    {
-                        title: 'produto1',
-                        quantity: 1,
-                        unit_price: 2
-                    }
-                ],
+                items: arrayProdutos,
                 "back_urls": {
-                    "success": "https://www.tu-sitio/success",
-                    "failure": "http://www.tu-sitio/failure",
-                    "pending": "http://www.tu-sitio/pending"
+                    "success": "localhost:3000/success",
+                    "failure": "localhost:3000/failure",
+                    "pending": "localhost:3000/pending"
                 },
                 "auto_return": "approved",
             }
