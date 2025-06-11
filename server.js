@@ -18,6 +18,14 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html')
 })
 
+app.post('/pagar', (req, res) => {
+    // const valorTotal = req.body.valorTotal
+    const arrayProdutos = req.body.arrayProdutos
+    
+    const preference = new Preference(client)
+    
+    res.status(200).json(arrayProdutos)
+})
 
 
 

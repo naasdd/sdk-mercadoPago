@@ -27,3 +27,14 @@ function addProduto(){
 
     valorTotalHTML.innerHTML = `R$ ${somaTotal}`
 }
+
+function puxarCompra(){
+    fetch('/pagar', {
+        method: 'POST',
+        body: arrayProdutos
+    })
+    .then(response => response.json())
+    .then(dados => {
+        console.log(dados)
+    })
+}
