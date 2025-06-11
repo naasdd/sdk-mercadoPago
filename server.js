@@ -18,13 +18,42 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html')
 })
 
-app.post('/pagar', (req, res) => {
-    // const valorTotal = req.body.valorTotal
+app.post('/pagar', async (req, res) => {
+    console.log(`[DEBBUG] req.body = ${JSON.stringify(req.body)}`)
+
     const arrayProdutos = req.body.arrayProdutos
-    
+    console.log(`[DEBBUG] arrayProdutos = ${JSON.stringify(arrayProdutos)}`)
+
     const preference = new Preference(client)
-    
-    res.status(200).json(arrayProdutos)
+
+    try {
+        const result = await preference.create({
+            body: {
+                // items: JSON.parse(arrayProdutos),
+                items: [
+                    {
+                        title: 'produto1',
+                        quantity: 1,
+                        unit_price: 2
+                    }
+                ],
+                "back_urls": {
+                    "success": "https://www.tu-sitio/success",
+                    "failure": "http://www.tu-sitio/failure",
+                    "pending": "http://www.tu-sitio/pending"
+                },
+                "auto_return": "approved",
+            }
+        })
+        res.status(200).json({ preferenceId: result.id })
+
+    } catch (err) {
+        console.error(`X Erro ao pagar: ${JSON.stringify(err)}`)
+        return res.status(500).json({ error: 'Erro ao pagar' })
+
+    }
+
+
 })
 
 
